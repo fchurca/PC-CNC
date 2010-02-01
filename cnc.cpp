@@ -47,7 +47,7 @@ long double Onoff::getSpeed(){
 istream& operator >> (std::istream& in, Onoff& d){
 	return in >> d.Name >> d._offset;
 }
-std::ostream& operator << (std::ostream & outfile, Onoff & d){
+ostream& operator << (std::ostream & outfile, Onoff & d){
 	outfile << d.Name << ':' << endl;
 	outfile << "Pin: " << d._offset << endl;
 	outfile << "Speed: " << d._speed << " toggles/minute" << endl;
@@ -122,14 +122,14 @@ void Stepper::Step(int steps){
 void Stepper::goTo(long pos){
 	Step(pos - _pos);
 }
-std::istream& operator >> (std::istream& in, Stepper& d){
-	return in >> d.Name >> d._offset >> d._steps;
+istream& operator >> (std::istream& in, Stepper& d){
+	return in >> d.Name >> d._offset >> d._steps >> d.Unit;
 }
-std::ostream& operator << (std::ostream & outfile, Stepper & d){
+ostream& operator << (std::ostream & outfile, Stepper & d){
 	outfile << d.Name << ':' << endl;
 	outfile << "Pins: " << d._offset << ',' << d._offset + 1 << endl;
-	outfile << "Steps: " << d._steps << " step/u" << endl;
-	outfile << "Speed: " << d._speed << " u/sec" << endl;
+	outfile << "Steps: " << d._steps << " step/" << d.Unit << endl;
+	outfile << "Speed: " << d._speed << ' ' << d.Unit << "/minute" << endl;
 	outfile << "Position: " << d._pos << " step" << endl;
 	return outfile;
 }
@@ -154,7 +154,7 @@ void Machine::Zero(){
 		onoffs[i].set(false);
 	}
 }
-std::istream& operator >> (istream & infile, Machine& d){
+istream& operator >> (istream & infile, Machine& d){
 	string type;
 	Stepper Sdump;
 	Onoff Odump;
@@ -177,7 +177,7 @@ std::istream& operator >> (istream & infile, Machine& d){
 	}
 	return infile;
 }
-std::ostream& operator << (ostream & outfile, Machine & d){
+ostream& operator << (ostream & outfile, Machine & d){
 	outfile << d.Name << endl;
 	outfile << "Using ";
 	if (d._port->IsOpened())

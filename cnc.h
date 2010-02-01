@@ -45,6 +45,7 @@ protected:
 	unsigned _state : 2;
 	long _pos;
 public:
+	std::string Unit;
 	Stepper();
 	Stepper(unsigned steps, unsigned short offset, ParallelPort * port);
 	long setPos(long pos);
