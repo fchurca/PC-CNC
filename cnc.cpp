@@ -45,7 +45,14 @@ long double Onoff::getSpeed(){
 	return _speed;
 }
 istream& operator >> (std::istream& in, Onoff& d){
-	return in >> d.Name >> d._offset;
+	in >> d.Name >> d._offset;
+	for (int i = 0; i < d.Name.length(); i++)
+		if (d.Name[i] == '_')
+			if (d.Name[i+1] == '_'){
+				d.Name.erase(i + 1, 1);
+			}else
+				d.Name[i] = ' ';
+	return in;
 }
 ostream& operator << (std::ostream & outfile, Onoff & d){
 	outfile << d.Name << ':' << endl;
@@ -123,7 +130,14 @@ void Stepper::goTo(long pos){
 	Step(pos - _pos);
 }
 istream& operator >> (std::istream& in, Stepper& d){
-	return in >> d.Name >> d._offset >> d._steps >> d.Unit;
+	in >> d.Name >> d._offset >> d._steps >> d.Unit;
+	for (int i = 0; i < d.Name.length(); i++)
+		if (d.Name[i] == '_')
+			if (d.Name[i+1] == '_'){
+				d.Name.erase(i + 1, 1);
+			}else
+				d.Name[i] = ' ';
+	return in;
 }
 ostream& operator << (std::ostream & outfile, Stepper & d){
 	outfile << d.Name << ':' << endl;
